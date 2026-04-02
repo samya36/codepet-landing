@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>codepet — Your code feeds a pet</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --card: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --dim: #8b949e;
+    --accent: #58a6ff;
+    --green: #3fb950;
+    --yellow: #d29922;
+    --purple: #bc8cff;
+    --pink: #f778ba;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* Hero */
+  .hero {
+    text-align: center;
+    padding: 80px 20px 60px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .hero h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 8px;
+    letter-spacing: -1px;
+  }
+  .hero h1 span { color: var(--green); }
+  .hero .tagline {
+    font-size: 1.35rem;
+    color: var(--dim);
+    margin-bottom: 32px;
+  }
+  .hero .desc {
+    font-size: 1.05rem;
+    color: var(--dim);
+    max-width: 540px;
+    margin: 0 auto 40px;
+  }
+
+  /* Terminal cards */
+  .pets {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 0 20px 60px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .pet-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0;
+    width: 280px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .pet-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  }
+  .pet-card .title-bar {
+    background: #21262d;
+    padding: 8px 14px;
+    font-size: 0.75rem;
+    color: var(--dim);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .title-bar .dots {
+    display: flex;
+    gap: 4px;
+  }
+  .title-bar .dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+  .dot.r { background: #f85149; }
+  .dot.y { background: #d29922; }
+  .dot.g { background: #3fb950; }
+  .pet-card pre {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+    font-size: 0.72rem;
+    line-height: 1.45;
+    padding: 12px 14px 16px;
+    white-space: pre;
+    overflow-x: auto;
+    color: var(--text);
+  }
+  .pet-card .label {
+    text-align: center;
+    padding: 0 14px 14px;
+    font-size: 0.8rem;
+    color: var(--dim);
+  }
+
+  /* How it works */
+  .how {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+  }
+  .how h2 {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 40px;
+  }
+  .steps {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .step {
+    flex: 1;
+    min-width: 180px;
+    max-width: 200px;
+    text-align: center;
+  }
+  .step .num {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 700;
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+  .step h3 { font-size: 1rem; margin-bottom: 6px; }
+  .step p { font-size: 0.85rem; color: var(--dim); }
+
+  /* Install */
+  .install {
+    text-align: center;
+    padding: 40px 20px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .install code {
+    display: inline-block;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 28px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 1rem;
+    color: var(--green);
+    letter-spacing: 0.5px;
+  }
+
+  /* Features */
+  .features {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .feat {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .feat h3 { font-size: 0.95rem; margin-bottom: 6px; }
+  .feat p { font-size: 0.85rem; color: var(--dim); }
+
+  /* CTA / Signup */
+  .cta {
+    text-align: center;
+    padding: 60px 20px 80px;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+  .cta h2 {
+    font-size: 1.8rem;
+    margin-bottom: 12px;
+  }
+  .cta p {
+    color: var(--dim);
+    margin-bottom: 28px;
+  }
+  .cta form {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .cta input[type="email"] {
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    font-size: 1rem;
+    width: 280px;
+    outline: none;
+  }
+  .cta input[type="email"]:focus {
+    border-color: var(--accent);
+  }
+  .cta button {
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: none;
+    background: var(--green);
+    color: var(--bg);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .cta button:hover { opacity: 0.85; }
+
+  .footer {
+    text-align: center;
+    padding: 30px 20px;
+    color: var(--dim);
+    font-size: 0.8rem;
+    border-top: 1px solid var(--border);
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 2rem; }
+    .features { grid-template-columns: 1fr; }
+    .pets { gap: 16px; }
+    .pet-card { width: 100%; max-width: 300px; }
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <h1><span>codepet</span></h1>
+  <p class="tagline">Your code feeds a pet.</p>
+  <p class="desc">
+    Every git commit hatches, feeds, and evolves a unique virtual companion in your terminal.
+    Write code. Level up. Collect rare pets.
+  </p>
+</section>
+
+<section class="pets">
+  <!-- Pet 1: Legend -->
+  <div class="pet-card">
+    <div class="title-bar">
+      <div class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+      terminal
+    </div>
+<pre>
+╭────────────────────────────────╮
+│       Lv.15 ★★ UNCOMMON        │
+│            [Junior]            │
+│                                │
+│   🪁                            │
+│  ✦🐧✦  Nova                     │
+│                                │
+│ Ships at midnight.             │
+│                                │
+│ XP: ██████────────────  200left│
+│                                │
+│ DEBUG: █████─────────────── 500│
+│ PATIE: ████████████████████2000│
+│ WISDO: █████─────────────── 500│
+╰────────────────────────────────╯
+</pre>
+    <div class="label">250 commits &middot; 50 bug fixes</div>
+  </div>
+
+  <!-- Pet 2: Newbie -->
+  <div class="pet-card">
+    <div class="title-bar">
+      <div class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+      terminal
+    </div>
+<pre>
+╭────────────────────────────────╮
+│         Lv.1 ★ COMMON          │
+│              [Egg]             │
+│                                │
+│   🧙                            │
+│  °🦆°  Sprout                   │
+│                                │
+│ Learning to debug.             │
+│                                │
+│ XP: ████──────────────  111left│
+│                                │
+│ DEBUG: ────────────────────   0│
+│ PATIE: ████████████████████  30│
+│ WISDO: ────────────────────   0│
+╰────────────────────────────────╯
+</pre>
+    <div class="label">Just hatched &middot; 3 commits</div>
+  </div>
+
+  <!-- Pet 3: Mid -->
+  <div class="pet-card">
+    <div class="title-bar">
+      <div class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+      terminal
+    </div>
+<pre>
+╭────────────────────────────────╮
+│         Lv.7 ★ COMMON          │
+│           [Hatchling]          │
+│                                │
+│   🐥                            │
+│  °🐻°  Byte                     │
+│                                │
+│ Refactors everything.          │
+│                                │
+│ XP: █████████████████─    6left│
+│                                │
+│ DEBUG: ██████────────────── 225│
+│ PATIE: ████████████████████ 740│
+│ WISDO: ████──────────────── 140│
+╰────────────────────────────────╯
+</pre>
+    <div class="label">95 commits &middot; about to evolve</div>
+  </div>
+</section>
+
+<section class="how">
+  <h2>How it works</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="num">1</div>
+      <h3>Install</h3>
+      <p>One command. Zero dependencies. Pure Python.</p>
+    </div>
+    <div class="step">
+      <div class="num">2</div>
+      <h3>Init</h3>
+      <p><code style="font-size:0.8rem;background:var(--card);padding:2px 6px;border-radius:4px;">codepet init</code> installs a git hook in your repo.</p>
+    </div>
+    <div class="step">
+      <div class="num">3</div>
+      <h3>Code</h3>
+      <p>Every commit earns XP. Bug fixes, tests, refactors — each grows different stats.</p>
+    </div>
+    <div class="step">
+      <div class="num">4</div>
+      <h3>Evolve</h3>
+      <p>Watch your pet level up through 5 evolution stages: Egg → Legend.</p>
+    </div>
+  </div>
+</section>
+
+<section class="install">
+  <code>pip install codepet</code>
+</section>
+
+<section class="features">
+  <div class="feat">
+    <h3>🎲 Deterministic Hatching</h3>
+    <p>Your pet is generated from your user ID. Same person, same pet — across machines, forever.</p>
+  </div>
+  <div class="feat">
+    <h3>📈 Real Stat Growth</h3>
+    <p>DEBUGGING, PATIENCE, CHAOS, WISDOM, SNARK — stats grow based on what you actually code.</p>
+  </div>
+  <div class="feat">
+    <h3>🏆 15 Achievements</h3>
+    <p>First Blood, Night Owl, Bug Slayer, Centurion, and more. Unlock badges as you code.</p>
+  </div>
+  <div class="feat">
+    <h3>🔥 Streak System</h3>
+    <p>Commit daily to build streaks. 3-day, 7-day, 30-day milestones with bonus XP.</p>
+  </div>
+  <div class="feat">
+    <h3>🪶 18KB, Zero Deps</h3>
+    <p>Pure Python. No network calls. No telemetry. Works offline. Installs in 1 second.</p>
+  </div>
+  <div class="feat">
+    <h3>🎯 Smart Classification</h3>
+    <p>Auto-detects commit type from conventional commits or message heuristics. No config needed.</p>
+  </div>
+</section>
+
+<section class="cta" id="signup">
+  <h2>Get early access</h2>
+  <p>Leave your email — we'll notify you when codepet launches.</p>
+  <form id="signup-form">
+    <input type="email" name="email" placeholder="dev@example.com" required>
+    <button type="submit">Notify me</button>
+  </form>
+  <p id="signup-ok" style="display:none;color:var(--green);margin-top:16px;">You're on the list.</p>
+</section>
+
+<footer class="footer">
+  codepet &middot; Your code feeds a pet.
+</footer>
+
+<script>
+// Minimal form handler — replace with your backend or Formspree/Buttondown endpoint
+document.getElementById('signup-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const email = this.email.value;
+
+  // Option A: POST to Formspree (replace YOUR_FORM_ID)
+  // fetch('https://formspree.io/f/YOUR_FORM_ID', {
+  //   method: 'POST',
+  //   headers: { 'Content-Type': 'application/json' },
+  //   body: JSON.stringify({ email })
+  // });
+
+  // Option B: mailto fallback for now
+  console.log('Signup:', email);
+  localStorage.setItem('codepet_signup_' + Date.now(), email);
+
+  this.style.display = 'none';
+  document.getElementById('signup-ok').style.display = 'block';
+});
+</script>
+</body>
+</html>
